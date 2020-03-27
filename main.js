@@ -30,11 +30,12 @@ const {enter, leave} = Stage
 const stage = new Stage()
 ;['start', 'cancel'].map(command => stage.command(command, async (ctx, next) => {
 	//userRegistrationMiddleware(ctx, () => { /* things to be run only if the registration succeed. */ }).then()
-	
+
 	// run anyway:
 	leave()(ctx).then()
-	await global.mainMenu.rootMenu.renderWith.reply(ctx)
+//	await global.mainMenu.rootMenu.renderWith.reply(ctx)
 }))
+
 
 // // register scenes:
 // const {UsernameScene, PasswordScene} = require('./scenes/add-user')
@@ -48,7 +49,10 @@ const stage = new Stage()
 bot.use(session())
 bot.use(stage.middleware())
 //*******************************************************************************************/
-
+bot.use((ctx,next)=>{
+	console.log('Hello');
+	ctx.reply('Hello');
+});
 
 bot.launch().then(() => console.log('%s: Bot started as @%s',
 		new Date().toLocaleString('en-ZA-u-ca-persian'), bot.options.username))
