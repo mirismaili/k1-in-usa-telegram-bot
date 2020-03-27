@@ -33,8 +33,14 @@ stage.command('cancel', leave())
 
 // register scenes:
 const {HelloScene} = require('./scenes/hello')
+const {SendLinkScene} = require('./scenes/hello')
+const {GetEmailScene} = require('./scenes/hello')
+const {GetScreenShot} = require('./scenes/hello')
 stage.register(
 		new HelloScene(),
+		new SendLinkScene(),
+		new GetEmailScene(),
+		new GetScreenShot(),
 )
 
 bot.use(session())
@@ -46,7 +52,7 @@ global.dynamicActions = {}
 bot.action(/.+/, async (ctx, next) => {
 	const action = ctx.match[0]
 	console.log(action)
-	
+
 	if (global.dynamicActions[action]) return await global.dynamicActions[action](ctx, next)
 	next()
 })
