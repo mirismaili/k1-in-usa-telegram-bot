@@ -25,47 +25,36 @@ const bot = new Telegraf(process.env.BOT_TOKEN, env.IS_ON_REMOTE ? undefined : {
 
 // managing sessions and scenes:
 
-/*
 const {enter, leave} = Stage
 
 const stage = new Stage()
-;['start', 'cancel'].map(command => stage.command(command, async (ctx, next) => {
-	//userRegistrationMiddleware(ctx, () => { /!* things to be run only if the registration succeed. *!/ }).then()
-
-	// run anyway:
-	leave()(ctx).then()
-//	await global.mainMenu.rootMenu.renderWith.reply(ctx)
-}))
-*/
+stage.command('cancel', leave())
 
 
-// // register scenes:
-// const {UsernameScene, PasswordScene} = require('./scenes/add-user')
-// const {QuestionsScene} = require('./scenes/bashgah-competitions')
-// stage.register(
-// 		new UsernameScene(),
-// 		new PasswordScene(),
-// 		new QuestionsScene(),
-// )
+// register scenes:
+const {HelloScene} = require('./scenes/hello')
+stage.register(
+		new HelloScene(),
+)
 
-/*bot.use(session())
-bot.use(stage.middleware())*/
+bot.use(session())
+bot.use(stage.middleware())
 //*******************************************************************************************/
-let number = 1;
 
-bot.use(async (ctx,next)=>{
+// log actions + trigger dynamic-actions:
+global.dynamicActions = {}
+bot.action(/.+/, async (ctx, next) => {
+	const action = ctx.match[0]
+	console.log(action)
+	
+	if (global.dynamicActions[action]) return await global.dynamicActions[action](ctx, next)
 	next()
-	console.log(number);
-	ctx.reply('Hello'+number);
-});
-bot.use(async (ctx,next) =>{
-	await ctx.reply('Salam');
-	number=2;
+})
+//*******************************************************************************************/
 
-});
 bot.start(ctx => {
-
-});
+	ctx.scene.enter('hello').then()
+})
 
 bot.launch().then(() => console.log('%s: Bot started as @%s',
 		new Date().toLocaleString('en-ZA-u-ca-persian'), bot.options.username))
