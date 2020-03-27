@@ -25,16 +25,18 @@ const bot = new Telegraf(process.env.BOT_TOKEN, env.IS_ON_REMOTE ? undefined : {
 
 // managing sessions and scenes:
 
+/*
 const {enter, leave} = Stage
 
 const stage = new Stage()
 ;['start', 'cancel'].map(command => stage.command(command, async (ctx, next) => {
-	//userRegistrationMiddleware(ctx, () => { /* things to be run only if the registration succeed. */ }).then()
+	//userRegistrationMiddleware(ctx, () => { /!* things to be run only if the registration succeed. *!/ }).then()
 
 	// run anyway:
 	leave()(ctx).then()
 //	await global.mainMenu.rootMenu.renderWith.reply(ctx)
 }))
+*/
 
 
 // // register scenes:
@@ -46,12 +48,23 @@ const stage = new Stage()
 // 		new QuestionsScene(),
 // )
 
-bot.use(session())
-bot.use(stage.middleware())
+/*bot.use(session())
+bot.use(stage.middleware())*/
 //*******************************************************************************************/
-bot.use((ctx,next)=>{
-	console.log('Hello');
-	ctx.reply('Hello');
+let number = 1;
+
+bot.use(async (ctx,next)=>{
+	next()
+	console.log(number);
+	ctx.reply('Hello'+number);
+});
+bot.use(async (ctx,next) =>{
+	await ctx.reply('Salam');
+	number=2;
+
+});
+bot.start(ctx => {
+
 });
 
 bot.launch().then(() => console.log('%s: Bot started as @%s',
