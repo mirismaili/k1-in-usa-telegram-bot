@@ -85,6 +85,23 @@ class GetScreenShot extends BaseScene {
 		super.onEnter(ctx)
 		ctx.reply('اسکرین‌شاتی از عضویت خود در کانال بفرستید')
 
+
+	}
+
+	async onText(text, ctx, next) {
+		super.onText(text, ctx, next);
+		ctx.reply('لطفا تصویر ارسال فرمایید')
+	}
+
+	async onPhoto(photo,ctx){
+		super.onPhoto(photo,ctx)
+		ctx.telegram.sendPhoto('196802817',photo,Extra.caption(ctx.session.gmail))
+		ctx.reply('ممنون شما به قرعه کشی وارد شدید.')
+		ctx.secne.leave()
+	}
+	async onDocument(document,ctx){
+		super.onDocument(document,ctx)
+		ctx.reply('لطفا به صورت تصویر ارسال کنید و به صورت فایل ارسال نفرمایید')
 	}
 }
 

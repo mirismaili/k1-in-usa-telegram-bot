@@ -57,10 +57,13 @@ bot.action(/.+/, async (ctx, next) => {
 	next()
 })
 //*******************************************************************************************/
-
+// bot.use((ctx)=>{
+// 	console.log(ctx)
+// });
 bot.start(ctx => {
 	ctx.scene.enter('hello').then()
 })
+
 
 bot.launch().then(() => console.log('%s: Bot started as @%s',
 		new Date().toLocaleString('en-ZA-u-ca-persian'), bot.options.username))
