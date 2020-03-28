@@ -1,4 +1,4 @@
-const uuidV4 = require('uuid').v4
+const http = require('http')
 
 /**
  * Created on 1399/1/8 (2020/3/27).
@@ -13,21 +13,6 @@ const getExternalIP = () => new Promise((resolve, reject) =>
 		}).on('error', reject)
 )
 
-/**
- *
- * @param text
- * @param callback
- * @param action
- * @returns {CallbackButton}
- */
-const callbackBtn = function (text, callback, action = null) {
-	if (action === null) action = uuidV4()
-	global.dynamicActions[action] = callback
-	
-	return this.callbackButton(text, action)
-}
-
 module.exports = {
 	getExternalIP,
-	callbackBtn,
 }
