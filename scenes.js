@@ -39,6 +39,8 @@ class GetEmailScene extends BaseScene {
 	
 	onText(text, ctx) {
 		ctx.session.gmail = text
+		if (!ctx.from.username) ctx.session.emailMessageId = ctx.message.message_id
+		
 		ctx.scene.enter('get-screenshot').then()
 	}
 }
@@ -59,19 +61,28 @@ class GetScreenshotScene extends BaseScene {
 	
 	async onPhoto(photos, ctx, next) {
 		ctx.scene.leave().then()
-		const photoId = photos[ctx.message.photo.length - 1].file_id
 		
-		const u = field => ctx.from[field] ? ctx.from[field] : ''
-		
-		// If destination id (WILL_FORWARDED_TO) didn't exist or was not allowed => Error: 400: Bad Request: chat not found
-		await ctx.telegram.sendPhoto(process.env.WILL_FORWARDED_TO, photoId, {
-			caption:
-					`Gmail: ${ctx.session.gmail}\n\nTelegram: <code>${u('id')}</code> @${u('username')}\n` +
-					`<b>${u('first_name')} ${u('last_name')}</b>`,
-			parse_mode: 'HTML'
-		})
-		
-		await ctx.reply('ممنون! شما به قرعه‌کشی وارد شدید!')
+		try {
+			const photoId = photos[ctx.message.photo.length - 1].file_id
+			
+			const u = field => ctx.from[field] ? ctx.from[field] : ''
+			
+			// If destination id (WILL_FORWARDED_TO) didn't exist or was not allowed => Error: 400: Bad Request: chat not found
+			await ctx.telegram.sendPhoto(process.env.WILL_FORWARDED_TO, photoId, {
+				caption:
+						`Gmail: ${ctx.session.gmail}\n\nTelegram: <code>${u('id')}</code> @${u('username')}\n` +
+						`<b>${u('first_name')} ${u('last_name')}</b>`,
+				parse_mode: 'HTML'
+			})
+			
+			if (ctx.session.emailMessageId)
+				await ctx.telegram.forwardMessage(process.env.WILL_FORWARDED_TO, ctx.chat.id, ctx.session.emailMessageId)
+			
+			await ctx.reply('ممنون! شما به قرعه‌کشی وارد شدید!')
+		} catch (e) {
+			console.error(e)
+			await ctx.reply('خطای غیر منتظره شماره ۶۵۳' + (e.message === '400: Bad Request: chat not found' ? '۰' : '۱'))
+		}
 	}
 	
 	async onDocument(document, ctx, next) {
