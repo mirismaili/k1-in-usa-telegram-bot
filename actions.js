@@ -13,6 +13,6 @@ module.exports = {
 	'No, I haven\'t subscribed to youtube channel.': async ctx => {
 		ctx.answerCbQuery().then()
 		await ctx.replyWithMarkdown(
-				'آموزش عضویت در کانال را [اینجا](https://t.me/K1inUSA/6683)‌ ببینید و پس از عضویت، برای ورود به لیست قرعه‌کشی، به این بات بازگردید.')
+				'آموزش عضویت در کانال را [اینجا](https://t.me/K1inUSA/6723)‌ ببینید و پس از عضویت، برای ورود به لیست قرعه‌کشی، به این بات بازگردید.')
 	},
 }

@@ -18,7 +18,7 @@ class StartScene extends BaseScene {
 		
 		ctx.scene.leave().then()
 		
-		await ctx.replyWithMarkdown('آیا در [کانال یوتیوب @K1inUSA](http://bit.ly/K1inUSAYoutube) عضو شده‌اید؟', Extra.markup(m => m.inlineKeyboard([
+		await ctx.replyWithMarkdown('آیا در [کانال یوتیوب @K1inUSA](https://youtube.com/c/K1inUSA) عضو شده‌اید؟', Extra.markup(m => m.inlineKeyboard([
 			m.callbackButton('خیر', 'No, I haven\'t subscribed to youtube channel.'),
 					m.callbackButton('بله', 'Yes, I have subscribed to youtube channel.'),
 				])
